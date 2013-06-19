@@ -66,6 +66,9 @@ public class RealShopPlayerListener implements Listener
 	{
 		plugin.getPlayerChestList().unselectChest(event.getPlayer());
 		plugin.getPlayerShopList().exitShop(event.getPlayer());
+
+		// The selected Shop should be cleared, too.
+		plugin.getPlayerShopList().unselectShop(event.getPlayer());
 	}
 
 	//---------------------------------------------------------------------------------- onPlayerQuit
@@ -74,6 +77,9 @@ public class RealShopPlayerListener implements Listener
 	{
 		plugin.getPlayerChestList().unselectChest(event.getPlayer());
 		plugin.getPlayerShopList().exitShop(event.getPlayer());
+
+		// The selected Shop should be cleared, too.
+		plugin.getPlayerShopList().unselectShop(event.getPlayer());
 	}
 
 }
