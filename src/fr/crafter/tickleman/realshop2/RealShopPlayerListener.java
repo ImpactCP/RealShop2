@@ -4,6 +4,7 @@ import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
@@ -46,12 +47,29 @@ public class RealShopPlayerListener implements Listener
 	}
 
 	//------------------------------------------------------------------------------ onPlayerInteract
-	@EventHandler
+
+	/*
+	 * A high priority handler is required here, to manage overlapping actions with other plugins
+	 *
+	 * Note: Eventhandlers are processed in this oder: Lowest, Low, Normal, High, Highest, Monitor
+	 */
+
+	@EventHandler(priority = EventPriority.HIGH)
 	public void onPlayerInteract(PlayerInteractEvent event)
 	{
 		// check if player right-clicked a chest
-		if (event.getAction().equals(Action.RIGHT_CLICK_BLOCK)) {
-    	Block block = event.getClickedBlock();
+
+		/*
+		 *  Making sure that event hasn't been canceled by another plugin yet.
+		 *  In conjunction with the corrent eventhandler priority, this prevents entering a shop
+		 *  when right-clicking it with the worldedit wand, the worldguard string (checking for build rights) or
+		 *  when the chest is locked by some plugin (SimpleChestLock for example)
+		 *
+		 *  Note: It's important that those plugins set the event to canceled if they handle it, 
+		 *  in order for this to work properly
+		 */
+		if (event.getAction().equals(Action.RIGHT_CLICK_BLOCK) && !event.isCancelled()) {
+			Block block = event.getClickedBlock();
 			if (block.getType().equals(Material.CHEST)) {
 				if (!new ShopAction(plugin).enterChestBlock(event.getPlayer(), block)) {
 					event.setCancelled(true);
