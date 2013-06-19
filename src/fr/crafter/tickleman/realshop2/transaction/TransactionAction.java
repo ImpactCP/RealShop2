@@ -1,8 +1,11 @@
 package fr.crafter.tickleman.realshop2.transaction;
 
 import java.io.BufferedWriter;
+import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Entity;
@@ -23,6 +26,8 @@ public class TransactionAction
 {
 
 	private static String fileName;
+
+	private static SimpleDateFormat dateFormat = new SimpleDateFormat ("dd.MM.yyyy HH-mm-ss");
 
 	private static BufferedWriter transactionsLogFile;
 
@@ -188,11 +193,14 @@ public class TransactionAction
 	) {
 		try {
 			if (transactionsLogFile == null) {
-				transactionsLogFile = new BufferedWriter(new FileWriter(fileName));
-				transactionsLogFile.write("#player:side;shopName;X;Y;Z;shopOwner;typeId;variant;price;quantity;amount\n");
+				transactionsLogFile = new BufferedWriter(new FileWriter(fileName, true));
+				if(!(new File(fileName)).exists()) {
+					transactionsLogFile.write("#time;player;side;shopName;X;Y;Z;shopOwner;typeId;variant;price;quantity;amount\n");
+				}
 			}
 			transactionsLogFile.write(
-				player.getName() + ";"
+				dateFormat.format(new Date()) + ";"
+				+ player.getName() + ";"
 				+ side + ";"
 				+ shop.getName() + ";"
 				+ shop.getLocation().getBlockX() + ";"
