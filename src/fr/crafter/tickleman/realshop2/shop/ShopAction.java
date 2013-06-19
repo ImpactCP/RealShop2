@@ -140,7 +140,17 @@ public class ShopAction
 				);
 				return false;
 			} else {
-				if (shop != plugin.getPlayerShopList().insideShop(player)) {
+				Shop previousShop = plugin.getPlayerShopList().insideShop(player);
+				if (shop != previousShop) {
+
+					/*
+					 * If the player was still inside another shop,
+					 * for whatever reason, let's exit it first.
+					 */
+					if(previousShop != null) {
+						this.exitShop(player);
+					}
+
 					// player enters the shop
 					plugin.getPlayerShopList().enterShop(player, shop);
 
