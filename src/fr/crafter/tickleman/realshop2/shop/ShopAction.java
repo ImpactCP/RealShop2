@@ -110,6 +110,11 @@ public class ShopAction
 		} else {
 			plugin.getLog().debug("selectChest(" + player.getName() + ")");
 			plugin.getPlayerShopList().unselectShop(player);
+			/*
+			 * If the player doesn't have any shop selected, he can't be within one.
+			 * So let's exit it, just in case.
+			 */
+			plugin.getPlayerShopList().exitShop(player);
 			return true;
 		}
 	}
