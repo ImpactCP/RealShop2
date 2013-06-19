@@ -14,14 +14,17 @@ public class PlayerShopList
 	RealShop2Plugin plugin;
 
 	/**
-	 * Selected shop list : Player => Shop
+	 * Selected shop list : Player name => Shop
+	 * 
+	 * Using the player object as key of this map is not reliable, as it changes once the player reconnects.
+	 * It's nothing major, but over time the map will fill up with non-used entries
 	 */
-	private Map<Player, Shop> selectShop = new HashMap<Player, Shop>();
+	private Map<String, Shop> selectShop = new HashMap<String, Shop>();
 
 	/**
-	 * Inside shop players list : Player => Shop
+	 * Inside shop players list : Player name => Shop
 	 */
-	private Map<Player, Shop> insideShop = new HashMap<Player, Shop>();
+	private Map<String, Shop> insideShop = new HashMap<String, Shop>();
 
 	//-------------------------------------------------------------------------------- PlayerShopList
 	public PlayerShopList(RealShop2Plugin plugin)
@@ -39,7 +42,7 @@ public class PlayerShopList
 	public void enterShop(Player player, Shop shop)
 	{
 		selectShop(player, shop);
-		insideShop.put(player, shop);
+		insideShop.put(player.getName().toLowerCase(), shop);
 	}
 
 	//-------------------------------------------------------------------------------------- exitShop
@@ -51,7 +54,7 @@ public class PlayerShopList
 	 */
 	public void exitShop(Player player)
 	{
-		insideShop.remove(player);
+		insideShop.remove(player.getName().toLowerCase());
 	}
 
 	//------------------------------------------------------------------------------- hasSelectedShop
@@ -75,7 +78,7 @@ public class PlayerShopList
 	 */
 	public Shop insideShop(Player player)
 	{
-		return insideShop.get(player);
+		return insideShop.get(player.getName().toLowerCase());
 	}
 
 	//-------------------------------------------------------------------------------------- isInShop
@@ -99,7 +102,7 @@ public class PlayerShopList
 	 */
 	public Shop selectedShop(Player player)
 	{
-		return selectShop.get(player);
+		return selectShop.get(player.getName().toLowerCase());
 	}
 
 	//------------------------------------------------------------------------------------ selectShop
@@ -111,7 +114,7 @@ public class PlayerShopList
 	 */
 	public void selectShop(Player player, Shop shop)
 	{
-		selectShop.put(player, shop);
+		selectShop.put(player.getName().toLowerCase(), shop);
 	}
 
 	//---------------------------------------------------------------------------------- unselectShop
@@ -123,7 +126,7 @@ public class PlayerShopList
 	 */
 	public void unselectShop(Player player)
 	{
-		selectShop.remove(player);
+		selectShop.remove(player.getName().toLowerCase());
 	}
 
 }
