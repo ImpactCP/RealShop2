@@ -125,7 +125,7 @@ public class ShopAction
 			);
 			return false;
 		} else {
-			if (!player.getName().equalsIgnoreCase(shop.getPlayerName()) && !shop.isOpened()) {
+			if (!player.getName().equalsIgnoreCase(shop.getPlayerName()) && !shop.isOpened() && !plugin.hasPermission(player, "realshop.op")) {
 				// shop is owned by someone else, and is closed
 				player.sendMessage(
 					RealColor.cancel
@@ -138,6 +138,11 @@ public class ShopAction
 				if (shop != plugin.getPlayerShopList().insideShop(player)) {
 					// player enters the shop
 					plugin.getPlayerShopList().enterShop(player, shop);
+
+					if(!shop.isOpened()) {
+						player.sendMessage(RealColor.cancel + "*** This shop is currently closed! ***");
+					}
+
 					if (player.getName().equalsIgnoreCase(shop.getPlayerName())) {
 						// player enters its own shop
 						player.sendMessage(
