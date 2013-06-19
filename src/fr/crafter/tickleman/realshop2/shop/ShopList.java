@@ -4,6 +4,7 @@ import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.FileReader;
 import java.io.FileWriter;
+import java.io.IOException;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
@@ -99,8 +100,13 @@ public class ShopList
 		} catch (Exception e) {
 			plugin.getLog().warning("File read error " + fileName + " (will create one)");
 			save();
+		} finally {
+			if(reader != null) {
+				try {
+					reader.close();
+				} catch (IOException e) {}
+			}
 		}
-		try { reader.close(); } catch (Exception e) {}
 		return this;
 	}
 
@@ -124,6 +130,12 @@ public class ShopList
 			}
 		} catch (Exception e) {
 			plugin.getLog().warning("File read error " + fileName + " (loadFromV0)");
+		} finally {
+			if(reader != null) {
+				try {
+					reader.close();
+				} catch (IOException e) {}
+			}
 		}
 		return true;
 	}
@@ -156,8 +168,13 @@ public class ShopList
 			writer.flush();
 		} catch (Exception e) {
 			plugin.getLog().severe("File save error " + fileName);
+		} finally {
+			if(writer != null) {
+				try {
+					writer.close();
+				} catch (IOException e) {}
+			}
 		}
-		try { writer.close(); } catch (Exception e) {}
 	}
 
 	//---------------------------------------------------------------------------------------- shopAt

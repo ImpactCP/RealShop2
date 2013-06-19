@@ -4,6 +4,7 @@ import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.FileReader;
 import java.io.FileWriter;
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
@@ -245,9 +246,10 @@ public class ItemPriceList
 			RealFileTools.extractDefaultFile(plugin, fileName);
 			willSave = true;
 		}
+		BufferedReader reader = null;
 		try {
 			prices.clear();
-			BufferedReader reader = new BufferedReader(new FileReader(fileName));
+			reader = new BufferedReader(new FileReader(fileName));
 			String buffer;
 			while ((buffer = reader.readLine()) != null) {
 				String[] line = buffer.split(";");
@@ -264,10 +266,15 @@ public class ItemPriceList
 					}
 				}
 			}
-			reader.close();
 		} catch (Exception e) {
 			if (fileName.contains("/market.prices.txt")) {
 				plugin.getLog().severe("Missing file " + fileName);
+			}
+		} finally {
+			if(reader != null) {
+				try {
+					reader.close();
+				} catch (IOException e) {}
 			}
 		}
 		if (willSave) {
@@ -319,8 +326,13 @@ public class ItemPriceList
 		} catch (Exception e) {
 			plugin.getLog().severe("Error writting " + fileName);
 			e.printStackTrace();
+		} finally {
+			if(writer != null) {
+				try {
+					writer.close();
+				} catch (IOException e) {}
+			}
 		}
-		try { writer.close(); } catch (Exception e) {}
 		// Save all current values (including calculated prices) into currentValues.txt
 		/*
 		if (fileName.contains("/market.prices.txt")) {

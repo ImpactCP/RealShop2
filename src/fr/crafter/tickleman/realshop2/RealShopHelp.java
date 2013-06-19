@@ -2,6 +2,7 @@ package fr.crafter.tickleman.realshop2;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
+import java.io.IOException;
 
 import org.bukkit.entity.Player;
 
@@ -40,11 +41,12 @@ public class RealShopHelp
 			}
 		}
 		// display help file
+		BufferedReader reader = null;
 		try {
 			if (page.equals("")) {
 				player.sendMessage(RealColor.text + plugin.tr("/rshop HELP summary"));
 			}
-			BufferedReader reader = new BufferedReader(new FileReader(fileName));
+			reader = new BufferedReader(new FileReader(fileName));
 			String buffer;
 			boolean inside = false;
 			while ((buffer = reader.readLine()) != null) {
@@ -85,10 +87,15 @@ public class RealShopHelp
 					}
 				}
 			}
-			reader.close();
 		} catch (Exception e) {
 			plugin.getLog().severe(e.getMessage());
 			plugin.getLog().severe(e.getStackTrace().toString());
+		} finally {
+			if(reader != null) {
+				try {
+					reader.close();
+				} catch (IOException e) {}
+			}
 		}
 	}
 
