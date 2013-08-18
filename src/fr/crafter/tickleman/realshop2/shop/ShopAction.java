@@ -74,7 +74,6 @@ public class ShopAction
 			RealColor.message + plugin.tr("The shop +name has been created")
 			.replace("+name", RealColor.shop + shop.getName() + RealColor.message)
 		);
-		selectShop(player, shop);
 		return shop;
 	}
 
@@ -108,7 +107,7 @@ public class ShopAction
 			plugin.getLog().debug("enterShop(" + player.getName() + ")");
 			return enterShop(player, shop);
 		} else {
-			plugin.getLog().debug("selectChest(" + player.getName() + ")");
+			plugin.getLog().debug("unselectChest(" + player.getName() + ")");
 			plugin.getPlayerShopList().unselectShop(player);
 			/*
 			 * If the player doesn't have any shop selected, he can't be within one.
@@ -175,8 +174,10 @@ public class ShopAction
 							.replace("+owner", RealColor.player + shop.getPlayerName() + RealColor.message)
 						);
 					}
+					return true;
+				} else {
+					return false;
 				}
-				return true;
 			}
 		}
 	}
@@ -398,8 +399,7 @@ public class ShopAction
 		StringBuffer list = new StringBuffer();
 		int count = 20;
 		boolean already = false;
-		for (ItemStack itemStack : player.getInventory().getContents()) if (itemStack != null) {
-			RealItemType itemType = new RealItemType(itemStack);
+		for (RealItemType itemType: shop.getSellOnlyList().getContent().values()) {
 			if ((itemTypeList.get(itemType) == null) && shop.isItemSellAllowed(itemType)) {
 				itemTypeList.put(itemType);
 				Price price = ownerPrices.getPrice(itemType, plugin.getMarketPrices());

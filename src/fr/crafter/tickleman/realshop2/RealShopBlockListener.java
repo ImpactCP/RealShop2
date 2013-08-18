@@ -33,7 +33,7 @@ public class RealShopBlockListener implements Listener
 	}
 
 	//---------------------------------------------------------------------------------- onBlockBreak
-	@EventHandler(priority = EventPriority.MONITOR)
+	@EventHandler(priority = EventPriority.HIGHEST)
 	public void onBlockBreak(BlockBreakEvent event)
 	{
 		Block block = event.getBlock();
@@ -61,7 +61,7 @@ public class RealShopBlockListener implements Listener
 	}
 
 	//----------------------------------------------------------------------------------- onBlockBurn
-	@EventHandler(priority = EventPriority.MONITOR)
+	@EventHandler(priority = EventPriority.HIGHEST)
 	public void onBlockBurn(BlockBurnEvent event)
 	{
 		Block block = event.getBlock();
@@ -80,7 +80,7 @@ public class RealShopBlockListener implements Listener
 	}
 
 	//--------------------------------------------------------------------------------- onBlockDamage
-	@EventHandler(priority = EventPriority.MONITOR)
+	@EventHandler(priority = EventPriority.HIGHEST)
 	public void onBlockDamage(BlockDamageEvent event)
 	{
 		Block block = event.getBlock();
@@ -107,7 +107,7 @@ public class RealShopBlockListener implements Listener
 	}
 
 	//----------------------------------------------------------------------------------- onBlockFade
-	@EventHandler(priority = EventPriority.MONITOR)
+	@EventHandler(priority = EventPriority.HIGHEST)
 	public void onBlockFade(BlockFadeEvent event)
 	{
 		Block block = event.getBlock();
@@ -126,7 +126,7 @@ public class RealShopBlockListener implements Listener
 	}
 
 	//--------------------------------------------------------------------------------- onBlockIgnite
-	@EventHandler(priority = EventPriority.MONITOR)
+	@EventHandler(priority = EventPriority.HIGHEST)
 	public void onBlockIgnite(BlockIgniteEvent event)
 	{
 		Block block = event.getBlock();
@@ -153,8 +153,9 @@ public class RealShopBlockListener implements Listener
 		if (block.getType().equals(Material.CHEST) && (player instanceof Player)) {
 			Shop shop = plugin.getShopList().shopAt(block.getLocation());
 			plugin.getLog().debug(
-				"shop at " + new RealLocation(block.getLocation()).toString() + " = "
-				+ (shop == null ? "null" : shop.toString())
+				event.getPlayer().getName() + " placed a new chest at: " +
+					new RealLocation(block.getLocation()).toString() + " = "
+				+ (shop == null ? "no shop" : shop.toString())
 			);
 			if (shop != null) {
 				if (shop.containsLocation(block.getLocation())) {
@@ -185,7 +186,7 @@ public class RealShopBlockListener implements Listener
 	}
 
 	//--------------------------------------------------------------------------------- onBlockSpread
-	@EventHandler(priority = EventPriority.MONITOR)
+	@EventHandler(priority = EventPriority.HIGHEST)
 	public void onBlockSpread(BlockSpreadEvent event)
 	{
 		Block block = event.getBlock();

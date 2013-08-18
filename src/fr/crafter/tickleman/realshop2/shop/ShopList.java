@@ -149,7 +149,14 @@ public class ShopList
 	//---------------------------------------------------------------------------------------- remove
 	public void remove(Shop shop)
 	{
-		shops.remove(shop.getId());
+		Location l = shop.getLocation1();
+		if(l != null) {
+			this.shops.remove(RealLocation.getId(l));
+		}
+		l = shop.getLocation2();
+		if(l != null) {
+			this.shops.remove(RealLocation.getId(l));
+		}
 	}
 
 	//------------------------------------------------------------------------------------------ save
